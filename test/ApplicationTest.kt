@@ -3,7 +3,9 @@ package org.shorter
 import io.ktor.http.*
 import kotlin.test.*
 import io.ktor.server.testing.*
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 class ApplicationTest {
     @Test
     fun testRoot() {

@@ -1,0 +1,18 @@
+version: '3.3'
+
+services:
+  shorter-postgresql:
+    image: postgres:${postgresql_version}
+    container_name: shorter-postgresql
+    hostname: shorter-postgresql
+    ports:
+      - 15432:5432
+    environment:
+      - POSTGRES_USER=shorter
+      - POSTGRES_PASSWORD=shorter
+      - POSTGRES_DB=shorter
+    volumes:
+    - shorter-postgresql-data:/var/lib/postgresql
+
+volumes:
+  shorter-postgresql-data:

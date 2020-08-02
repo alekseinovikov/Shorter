@@ -10,14 +10,20 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.jackson.jackson
 import io.ktor.routing.routing
+import org.shorter.org.shorter.Database.initDB
 import org.shorter.org.shorter.configureRouting
 import org.shorter.org.shorter.configureStatic
+import kotlin.time.ExperimentalTime
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+@ExperimentalTime
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
+    initDB()
+
     install(AutoHeadResponse)
 
     install(CORS) {
