@@ -20,9 +20,9 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @ExperimentalTime
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
-fun Application.module(testing: Boolean = false) {
+fun Application.module(testing: Boolean = false, dbHost: String = "localhost", dbPort:Int = 15432) {
 
-    initDB()
+    initDB(dbHost, dbPort)
 
     install(AutoHeadResponse)
 

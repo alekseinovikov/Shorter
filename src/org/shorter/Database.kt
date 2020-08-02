@@ -20,25 +20,30 @@ import kotlin.time.toJavaDuration
 @ExperimentalTime
 object Database {
 
-    private val connectionFactory = PostgresqlConnectionFactory(
-        PostgresqlConnectionConfiguration.builder()
-            .host("localhost")
-            .port(15432)
-            .username("shorter")
-            .password("shorter")
-            .database("shorter")
+    private fun initConnectionPool(dbHost: String, dbPort: Int) {
+        val connectionFactory = PostgresqlConnectionFactory(
+            PostgresqlConnectionConfiguration.builder()
+                .host(dbHost)
+                .port(dbPort)
+                .username("shorter")
+                .password("shorter")
+                .database("shorter")
+                .build()
+        )
+        val poolConfig = ConnectionPoolConfiguration.builder(connectionFactory)
+            .maxIdleTime(10.seconds.toJavaDuration())
+            .maxSize(20)
             .build()
-    )
 
-    private val poolConfig = ConnectionPoolConfiguration.builder(connectionFactory)
-        .maxIdleTime(10.seconds.toJavaDuration())
-        .maxSize(20)
-        .build()
+        this.pool = ConnectionPool(poolConfig)
+    }
 
-    private val pool = ConnectionPool(poolConfig)
+    private lateinit var pool: ConnectionPool
     private suspend fun getConnection() = pool.create().awaitSingle()
 
-    fun Application.initDB() {
+    fun Application.initDB(dbHost: String, dbPort: Int) {
+        initConnectionPool(dbHost, dbPort)
+
         environment.monitor.subscribe(ApplicationStarted) {
             launch { pool.warmup().awaitFirst() }
         }

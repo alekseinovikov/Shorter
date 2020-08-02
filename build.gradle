@@ -50,4 +50,5 @@ dependencies {
 
 
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    testImplementation "org.testcontainers:postgresql:1.14.3"
 }
